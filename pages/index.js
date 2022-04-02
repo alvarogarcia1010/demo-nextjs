@@ -1,8 +1,11 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import styles from '../styles/Home.module.css'
+import { useTranslation } from 'next-i18next';
 
 export default function Home() {
+  const { t } = useTranslation()
   return (
     <div className={styles.container}>
       <Head>
@@ -13,17 +16,17 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          {t('common:welcome')} <a href="https://nextjs.org">Next.js!</a>
         </h1>
 
         <p className={styles.description}>
-          Get started by editing{' '}
+         {t('common:get_started')}{' '}
           <code className={styles.code}>pages/index.js</code>
         </p>
 
         <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
+            <h2>{t('common:documentation')} &rarr;</h2>
             <p>Find in-depth information about Next.js features and API.</p>
           </a>
 
@@ -66,4 +69,13 @@ export default function Home() {
       </footer>
     </div>
   )
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+            // Will be passed to the page component as props
+    }
+  }
 }
